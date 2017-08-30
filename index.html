@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html class="no-js" lang="" ng-app="pickcel">
+  <head>
+   <!-- <base href="/"> -->
+    <meta charset="utf-8">
+    <meta https-equiv="x-ua-compatible" content="ie=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Place favicon.ico in the root directory -->
+
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/fhmm.min.css">
+    <link rel="stylesheet" href="lib/angular-chart.js/dist/angular-chart.css">
+    <link rel="stylesheet" href="lib/datatables/media/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="lib/angular-datatables/dist/plugins/bootstrap/datatables.bootstrap.min.css">
+    <link rel="stylesheet" href="plugins/bootstrap-tagsinput/bootstrap-tagsinput.css">
+    <link rel="stylesheet" href="lib/angular-dialog-service/dist/dialogs.min.css">
+    <link rel="stylesheet" href="lib/ng-tags-input/ng-tags-input.min.css"> 
+    <link rel="stylesheet" href="lib/angular-loading-bar/build/loading-bar.min.css">
+    <link rel="stylesheet" href="lib/angular-toastr/angular-toastr.css" />
+    <link rel="stylesheet" type="text/css" href="lib/tree-grid/tree-grid.css">
+    <link rel="stylesheet" href="lib/angular-toastr/angular-toastr.css" />
+    <link rel="stylesheet" href="css/main.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="js/modernizr-2.8.3.min.js"></script>
+  </head>
+  <body>
+    <style type="text/css">
+      div.m-app-loading {
+        position: fixed ;
+      }
+      div.m-app-loading div.animated-container {
+        background-color: #ffffff;
+        bottom: 0px ;
+        left: 0px ;
+        opacity: 1.0;
+        position: fixed ;
+        right: 0px ;
+        top: 0px ;
+        z-index: 999999 ;
+      }
+      /* Used to initialize the ng-leave animation state. */
+      div.m-app-loading div.animated-container.ng-leave {
+        opacity: 1.0 ;
+        transition: all linear 200ms ;
+        -webkit-transition: all linear 200ms ;
+      }
+      div.m-app-loading div.animated-container.ng-leave-active {
+        opacity: 0 ;
+      }
+      [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+        display: none !important;
+      }
+    </style>
+    <div class="m-app-loading" ng-animate-children ng-controller="preloadingController">
+      <div class="animated-container">
+        <center><img src="img/loading.gif" class="img-responsive" alt="" /></center>
+      </div>
+    </div>
+
+    <nav class="navbar navbar-default fhmm ng-cloak" role="navigation" ng-controller="navigationController" ng-show="nav_bar">
+      <div class="navbar-header">
+        <button type="button" data-toggle="collapse" data-target="#defaultmenu" class="navbar-toggle"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="#" class="navbar-brand"><!--<i class="fa fa-home"></i>--></a>
+      </div><!-- end navbar-header -->
+
+      <h4 class="navbar-brand menu-heading">{{page_name}}</h4>
+
+      <div id="defaultmenu" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a ng-show="can('dashboard')" ui-sref="dashboard"><span class="glyphicon glyphicon-home"></span> Home</a><a ng-hide="can('dashboard')" ui-sref="display_management"><span class="glyphicon glyphicon-home"></span> Home</a></li> 
+          <!-- list elements -->
+          <li class="dropdown fhmm-fw"><a href="" data-toggle="dropdown" class="dropdown-toggle">Services <b class="caret"></b></a>
+            <ul class="dropdown-menu fullwidth">
+              <li class="fhmm-content withdesc">
+                <div class="row">
+
+                  <div class="col-sm-3 col-sm-offset-2">
+                    <h3 class="title">Management</h3>
+                    <ul class="fhmm-ul">
+		      <li ng-show="can('display_status')"><a data-description="Monitor and manage screens" ui-sref="display_status" ><span class="glyphicon glyphicon-blackboard"></span><span class="menu-heading"> Display Management (Advance)</span></a></li>
+                      <li ng-show="can('customer_management')"><a data-description="Create and manage advertisers" ui-sref="customer_management" ><span class="glyphicon glyphicon-user"></span><span class="menu-heading"> Advertiser</span></a></li>
+                      <li ng-show="can('creative_management')"><a data-description="Upload and manage creatives (Images, videos)" ui-sref="creative_management" ><span class="glyphicon glyphicon-picture"></span><span class="menu-heading"> Creatives</span></a></li>
+                      <li ng-show="can('real_estate_management')"><a data-description="Create and manage screen hosts" ui-sref="real_estate_management" ><span class="glyphicon glyphicon-object-align-bottom"></span><span class="menu-heading"> Real Estate</span></a></li>
+                      <li ng-show="can('display_management')"><a data-description="Add, monitor and manage screens" ui-sref="display_management" ><span class="glyphicon glyphicon-blackboard"></span><span class="menu-heading"> Display</span></a></li>
+                      <li ng-show="can('campaign_management')"><a data-description="Schedule and manage ad campaigns" ui-sref="campaign_management" ><span class="glyphicon glyphicon-bullhorn"></span><span class="menu-heading"> Campaign</span></a></li>
+                    </ul>
+                  </div>
+
+                  <div class="col-sm-3" ng-show="can('custom_content_management') || can('custom_template_management') || can('custom_schedule_management') || can('manage_content') || can('custom_template_management_for_apartment')">
+                    <h3 class="title">Customization</h3>
+                    <ul class="fhmm-ul">
+                      <li ng-show="can('custom_content_management')"><a data-description="Create, schedule/push custom content for display(s)" ui-sref="custom_content_management" ><span class="glyphicon glyphicon-modal-window"></span><span class="menu-heading"> Custom Content</span></a></li>
+                      <li ng-show="can('custom_template_management')"><a data-description="Create and manage templates" ui-sref="custom_template_management" ><span class="glyphicon glyphicon-modal-window"></span><span class="menu-heading"> Template</span></a></li>
+                      <li ng-show="can('custom_schedule_management')"><a data-description="Manage schedules" ui-sref="custom_schedule_management" ><span class="glyphicon glyphicon-time"></span><span class="menu-heading"> Custom Schedule</span></a></li>
+
+<!--                      <li ng-show="can('manage_content')"><a data-description="Manage content" ui-sref="manage_content"><span class="glyphicon glyphicon-modal-window"></span><span class="menu-heading"> Manage Content</span></a></li>-->
+                      <li ng-show="can('custom_template_management_for_apartment')"><a data-description="Manage notice board" ui-sref="custom_template_management_for_apartment" ><span class="glyphicon glyphicon-modal-window"></span><span class="menu-heading"> Manage Notice Board</span></a></li>
+                    </ul>
+                  </div>
+
+                  <div class="col-sm-3" ng-show="can('proof_of_play') || can('display_uptime')">
+                    <h3 class="title">Reports</h3>
+                    <ul class="fhmm-ul">
+                      <li ng-show="can('proof_of_play')"><a data-description="View campaign proof of play" ui-sref="proof_of_play"><span class="glyphicon glyphicon-stats"></span><span class="menu-heading" > Proof of Play</span></a></li>
+                      <li ng-show="can('display_uptime')"><a data-description="View display uptime reports" ui-sref="display_uptime" ><span class="glyphicon glyphicon-stats"></span><span class="menu-heading"> Display Uptime</span></a></li>
+                    </ul>
+                  </div>
+
+                  <div class="col-sm-3" ng-show="can('usergroup')">
+                    <h3 class="title">Administration</h3>
+                    <ul class="fhmm-ul">
+                      <li ng-show="can('usergroup')"><a data-description="Manage users, groups and roles" ui-sref="usergroup"><span class="glyphicon glyphicon-user"></span><span class="menu-heading" > Group And Role Management</span></a></li>
+                      <li ng-show="can('engagement_management')"><a data-description="Manage Engagement content" ui-sref="engagement_management"><span class="glyphicon glyphicon-user"></span><span class="menu-heading" > Engagement Management</span></a></li>
+                      <li ng-show="can('global_settings')"><a data-description="Manage global setting" ui-sref="global_settings"><span class="glyphicon glyphicon-cog"></span><span class="menu-heading" > Global Settings</span></a></li>
+                    </ul>
+                  </div>
+                </div><!-- end row -->
+              </li><!-- end grid demo -->
+            </ul><!-- end drop down menu -->
+          </li><!-- end list elements -->
+          <!-- list elements -->
+        </ul><!-- end nav navbar-nav -->
+
+        <ul class="nav navbar-nav navbar-right">
+          <li class="active"><a><span class="glyphicon glyphicon-user"></span> {{logged_user}}</a></li>
+          <li class="dropdown"><a href="" data-toggle="dropdown" class="dropdown-toggle"><span class="glyphicon glyphicon-cog"></span> Settings<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a ui-sref="user_profile">Profile</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a class="btn" ng-click="logout()"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Sign Out</a></li>
+            </ul>
+          </li>
+        </ul><!-- end nav navbar-nav navbar-right -->
+      </div><!-- end #navbar-collapse-1 -->
+
+    </nav>
+
+    <div ui-view></div>
+
+    <!-- Add your site or application content here -->
+    <script src="lib/jquery/dist/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="lib/jquery/dist/jquery.min.js"><\/script>')</script>   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.9/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.9/angular-cookies.min.js"></script>
+    <script src="lib/angular-animate/angular-animate.min.js"></script>
+    <script type="text/javascript">        
+      angular.module( "pickcel1", ['ngAnimate']);
+    </script>
+    <script src="lib/angular-resource/angular-resource.js"></script>
+    <script src="lib/angular-route/angular-route.min.js"></script>
+    <script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="lib/angular-sanitize/angular-sanitize.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-csv/0.3.3/ng-csv.min.js"></script>
+    <script src="lib/angular-acl/angular-acl.min.js"></script>
+    <script src="lib/Chart.min.js"></script>
+    <script src="lib/angular-chart.js/dist/angular-chart.js"></script>
+    <script src="lib/moment/moment.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="lib/datatables/media/js/jquery.dataTables.min.js"></script>    
+    <script src="lib/angular-sanitize/angular-sanitize.min.js"></script>
+    <script src="lib/angular-utils-pagination/dirPagination.js"></script>
+    <script src="lib/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script src="lib/angular-datatables/dist/angular-datatables.min.js"></script>
+    <script src="lib/angular-datatables/dist/plugins/bootstrap/angular-datatables.bootstrap.min.js"></script>
+    <script src="lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="lib/checklist-model/checklist-model.js"></script>
+    <script src="lib/angular-dialog-service/dist/dialogs.min.js"></script>
+    <script src="lib/ng-tags-input/ng-tags-input.min.js"></script>
+    <script src="lib/angular-loading-bar/build/loading-bar.min.js"></script>
+    <script src="lib/ng-file-upload/ng-file-upload-shim.min.js"></script> 
+    <script src="lib/ng-file-upload/ng-file-upload.min.js"></script>
+    <script src="lib/angular-toastr/angular-toastr.tpls.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+    <script src="plugins/typeahead.bundle.min.js"></script>
+    <script src="lib/x2js/xml2json.js"></script>
+    <script src="lib/angular-x2js/src/x2js.js"></script>
+    <script src="lib/tree-grid/tree-grid-directive.js"></script>
+    <script src="lib/angular-toastr/angular-toastr.tpls.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
+    <script src="bower_components/js-xlsx/dist/xlsx.full.min.js"></script>
+    <script src="bower_components/angular-xlsx/angular-xlsx.js"></script>
+    <script src="lib/pdfmake.min.js"></script>
+    <script src="lib/vfs_fonts.js"></script>
+    <script src="js/services.min.js?rel=1503658432042"></script>
+    <script src="js/app.min.js?rel=1503658432043"></script>
+    <script src="js/navigation_controller.min.js?rel=1503658432043"></script>
+    <script src="js/dashboard_controller.min.js?rel=1503658432044"></script>
+    <script src="js/customer_controller.min.js?rel=1503658432044"></script>
+    <script src="js/display_controller.min.js?rel=1503658432044"></script>
+    <script src="js/real_estate_controller.min.js?rel=1503658432045"></script>
+    <script src="js/campaign_controller.min.js?rel=1503658432045"></script>
+    <script src="js/creative_controller.min.js?rel=1503658432046"></script>
+    <script src="js/report_controller.min.js?rel=1503658432046"></script>
+    <script src="js/custom_content_controller.min.js?rel=1503658432046"></script>
+    <script src="js/custom_template_controller.min.js?rel=1503658432047"></script>
+    <script src="js/custom_schedule_controller.min.js?rel=1503658432047"></script>
+    <script src="js/engagement_controller.min.js?rel=1503658432048"></script>
+    <script src="js/usergroup.min.js?rel=1503658432048"></script>
+    <script src="js/global_settings_controller.min.js?rel=1503658432048"></script>
+    <script src="js/user_profile.min.js?rel=1503658432049"></script>
+    <script src="js/plugins.min.js?rel=1503658432049"></script>
+    <!--    <script src="js/main.js"></script>-->
+  </body>
+</html>
